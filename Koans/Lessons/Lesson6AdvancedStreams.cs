@@ -18,7 +18,7 @@ namespace Koans.Lessons
 			var you = new object[] {1, 2, 3}.ToObservable();
 			var me = new object[] {"A", "B", "C"}.ToObservable();
 			you.Merge(me).Subscribe(a => easy.Append(a + " "));
-			Assert.AreEqual(easy.ToString(), ___);
+			Assert.AreEqual(easy.ToString(), "1 A 2 B 3 C ");
 		}
 
 		[TestMethod]
@@ -40,7 +40,7 @@ namespace Koans.Lessons
 			s1.OnNext("perfect.");
 			
 			Assert.AreEqual("I am nobody. Nobody is perfect.", String.Join(" ",both));
-			Assert.AreEqual(___, String.Join(" ",first));
+			Assert.AreEqual("I am perfect.", String.Join(" ",first));
 		}
 
 
@@ -49,7 +49,7 @@ namespace Koans.Lessons
 		{
 			var oddsAndEvens = new[] {"", ""};
 			var numbers = Observable.Range(1, 9);
-			var split = numbers.GroupBy(n => n% ____);
+			var split = numbers.GroupBy(n => n% 2);
 			split.Subscribe((IGroupedObservable<int, int> group) => group.Subscribe(n => oddsAndEvens[group.Key] += n));
 			var evens = oddsAndEvens[0];
 			var odds = oddsAndEvens[1];
@@ -63,7 +63,7 @@ namespace Koans.Lessons
 			var averages = new[] {0.0, 0.0};
 			var numbers = new[] {22, 22, 99, 22, 101, 22}.ToObservable();
 			var split = numbers.GroupBy(n => n%2);
-			split.Subscribe((IGroupedObservable<int, int> g) => g.Average().____(a => averages[g.Key] = a));
+			split.Subscribe((IGroupedObservable<int, int> g) => g.Average().Subscribe(a => averages[g.Key] = a));
 			Assert.AreEqual(22, averages[0]);
 			Assert.AreEqual(100, averages[1]);
 		}
@@ -80,7 +80,7 @@ namespace Koans.Lessons
 			numbers.OnNext(2, 2, 2, 2, 2);
 			numbers.OnCompleted();
 			Assert.AreEqual(15, sum);
-			Assert.AreEqual(average, ___);
+			Assert.AreEqual(average, 2);
 		}
 
 		#region Ignore
