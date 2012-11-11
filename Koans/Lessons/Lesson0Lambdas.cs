@@ -19,19 +19,19 @@ namespace Koans.Lessons
 		[TestMethod]
 		public void GettingStarted1ReadingTheErrorMessage()
 		{
-			Assert.AreEqual(___, ReadTheErrorMessageToFigureOutWhatThisReturns());
+			Assert.AreEqual("Harry Potter", ReadTheErrorMessageToFigureOutWhatThisReturns());
 		}
 
 
 		[TestMethod]
 		public void LambdasAreBlocksOfCode()
 		{
-			Run(() => Assert.AreEqual(true, ___));
+			Run(() => Assert.AreEqual(true, true));
 		}
 		[TestMethod]
 		public void LambdasAreActions()
 		{
-			Action lambda = () => Assert.AreEqual(true, ___);
+			Action lambda = () => Assert.AreEqual(true, true);
 			lambda();
 		}
 		[TestMethod]
@@ -43,66 +43,66 @@ namespace Koans.Lessons
 			dictionary['b'] = (Action)(() => i++);
 			dictionary['c'] = i++;
 			Assert.AreEqual(1, dictionary['a']);
-			Assert.AreEqual(_______, dictionary['c']);
+			Assert.AreEqual(2, dictionary['c']);
 		}		
 		//Q: Why didn't the i++ get run for dictionary entry b ?
-		//A: 
+		//A: The code in the action is not executed, an action object is simply assigned to dictionary['b']
 		[TestMethod]
 		public void ButLambdasMightNotBeCalled()
 		{
-			RunIfNeeded(shouldActionBeRun: ____, action: () => Assert.Fail("Don't Run This"));
+			RunIfNeeded(shouldActionBeRun: false, action: () => Assert.Fail("Don't Run This"));
 		}
 
 		[TestMethod]
 		public void LambdasCanUseLocalVariables()
 		{
-			var lambdaStatus = ___;
+			var lambdaStatus = "Awesome!";
 			Run(() => Assert.AreEqual("Awesome!", lambdaStatus));
 		}
 
 		[TestMethod]
 		public void LambdasAreTinyMethods()
 		{
-			RunWithValue(___, (s) => Assert.AreEqual("Passed In", s));
+			RunWithValue("Passed In", (s) => Assert.AreEqual("Passed In", s));
 		}
 
 		[TestMethod]
 		public void LambdasCanReturnAValue()
 		{
-			var message = HiFive(() => { return ___; });
+			var message = HiFive(() => { return "Bart"; });
 			Assert.AreEqual("Hey Bart, Give me 5", message);
 		}
 		[TestMethod]
 		public void LambdasAutomaticallyReturnSingleStatements()
 		{
-			var message = HiFive(() => ___);
+			var message = HiFive(() => "Llewellyn");
 			Assert.AreEqual("Hey Llewellyn, Give me 5", message);
 		}
 
 		[TestMethod]
 		public void LambdasCanUseParametersInReturn()
 		{
-			var message = Run(___, (p) => p + 1);
+			var message = Run(5, (p) => p + 1);
 			Assert.AreEqual(6, message);
 		}
 		[TestMethod]
 		public void LambdasThatReturnAreCalledFunctions()
 		{
 			Func<int, int> lambda = (a) => a*a;
-			Assert.AreEqual(___, lambda(5));
+			Assert.AreEqual(25, lambda(5));
 		}
 
 		[TestMethod]
 		public void LambdasCanBeVeryTerse()
 		{
 			int count = Run("12345678", s => s.Length);
-			Assert.AreEqual(___, count);
+			Assert.AreEqual(8, count);
 		}
 
 		[TestMethod]
 		public void LambdasCanBeVeryVerbose()
 		{
-			var count = Run("a1a2a3a4", _____, (String given, char remove) =>
+			var count = Run("a1a2a3a4", 'a', (String given, char remove) =>
 			                                   	{
 			                                   		var text = new StringBuilder();
 			                                   		foreach (var c in given)
@@ -125,7 +125,7 @@ namespace Koans.Lessons
 
 			Sing("But the cat came back");
 			Sing("The very next day");
-			Sing("Oh the " + ___ + " came back");
+			Sing("Oh the " + "cat" + " came back");
 			Sing("We thought he was a goner");
 			Sing("But the cat came back, he just wouldn't go away");
 
@@ -133,7 +133,7 @@ namespace Koans.Lessons
 
 			Sing("But the cat came back");
 			Sing("The very next day");
-			Sing("Oh the " + ___ + " came back");
+			Sing("Oh the " + "cat" + " came back");
 			Sing("We thought he was a goner");
 			Sing("But the cat came back, he just wouldn't go away");
 			AssertCatSong();
@@ -146,13 +146,13 @@ namespace Koans.Lessons
 
 			Sing("We gave the cat to a little kid");
 			SingVerse();
-			Sing("We sent the cat out on a " + ___);
+			Sing("We sent the cat out on a " + "boat");
 			SingVerse();
 			
 			AssertCatSong();
 		}
 		//Q: How did we remove all the duplication from method 1 of 2?
-		//A:
+		//A: What duplication?
 		private void SingVerse()
 		{
 			Sing("But the cat came back");
@@ -167,12 +167,12 @@ namespace Koans.Lessons
 		{
 			StartSong();
 			Sing("100 bottles of beer on the wall");
-			Sing("100 bottles of " + ___);
+			Sing("100 bottles of " + "beer");
 			Sing("Take one down, pass it around");
 			Sing("100 bottles of beer on the wall");
 
 			Sing("99 bottles of beer on the wall");
-			Sing("99 bottles of " + ___);
+			Sing("99 bottles of " + "beer");
 			Sing("Take one down, pass it around");
 			Sing("99 bottles of beer on the wall");
 			AssertBeerSong();
@@ -183,7 +183,7 @@ namespace Koans.Lessons
 		{
 			StartSong();
 			SingVerse(100);
-			SingVerse(___);
+			SingVerse(99);
 
 			AssertBeerSong();
 		}
@@ -208,7 +208,7 @@ namespace Koans.Lessons
 			number = number + 2;
 			Sing(number + "! ");
 			number = number + 2;
-			Sing(___ + "! ");
+			Sing(number + "! ");
 			Sing("Who do we appreciate?");
 
 			number = 17;
@@ -229,7 +229,7 @@ namespace Koans.Lessons
 		public void LambdaDuplication2Of2()
 		{
 			StartSong();
-			SingVerse(2, (int n) => n + _______, "Who do we appreciate?");
+			SingVerse(2, (int n) => n + 2, "Who do we appreciate?");
 			SingVerse(17, (int n) => GetNextPrime(n), "These are the primes, that we find fine!");
 			AssertNumberSong();
 		}
