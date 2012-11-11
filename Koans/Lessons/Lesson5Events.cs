@@ -22,7 +22,7 @@ namespace Koans.Lessons
                 TextChanged(null, new TextChangedEventArgs {value = "R"});
             }
             TextChanged(null, new TextChangedEventArgs {value = "T"});
-            Assert.AreEqual(___, received.ToString());
+            Assert.AreEqual("BAR", received.ToString());
         }
 
         #region Ignore
