@@ -24,25 +24,25 @@ namespace Koans.Lessons
 		[TestMethod]
 		public void SimpleSubscription()
 		{
-			Observable.Return(42).Subscribe(x => Assert.AreEqual(___, x));
+			Observable.Return(42).Subscribe(x => Assert.AreEqual(42, x));
 		}
 
 		[TestMethod]
 		public void WhatGoesInComesOut()
 		{
-			Observable.Return(___).Subscribe(x => Assert.AreEqual(101, x));
+			Observable.Return(101).Subscribe(x => Assert.AreEqual(101, x));
 		}
 		//Q: Which interface Rx apply? (hint: what does "Return()" return)
-		//A: 
+		//A: IObservable
 		[TestMethod]
 		public void ThisIsTheSameAsAnEventStream()
 		{
 			var events = new Subject<int>();
-			events.Subscribe(x => Assert.AreEqual(___, x));
+			events.Subscribe(x => Assert.AreEqual(37, x));
 			events.OnNext(37);
 		}
 		//Q: What is the relationship between "ThisIsTheSameAsAnEventStream()" and "SimpleSubscription()"?
-		//A:
+		//A: They both subscribe to an event
 		[TestMethod]
 		public void HowEventStreamsRelateToObservables()
 		{
@@ -51,11 +51,11 @@ namespace Koans.Lessons
 			int eventStreamResult = 1;
 			var events = new Subject<int>();
 			events.Subscribe(i => eventStreamResult = i);
-			events.___(73);
+			events.OnNext(73);
 			Assert.AreEqual(observableResult, eventStreamResult);
 		}
 		//Q: What does Observable.Return() map to for a Subject?
-		//A: 
+		//A: OnNext
 
 		[TestMethod]
 		public void EventStreamsHaveMultipleEvents()
@@ -65,17 +65,17 @@ namespace Koans.Lessons
 			events.Subscribe(i => eventStreamResult += i);
 			events.OnNext(10);
 			events.OnNext(7);
-			Assert.AreEqual(____, eventStreamResult);
+			Assert.AreEqual(17, eventStreamResult);
 		}
 		//Q: What does Observable.Return() map to for a Subject?
-		//A: 
+		//A: OnNext
 
 		[TestMethod]
 		public void SimpleReturn()
 		{
 			var received = "";
 			Observable.Return("Foo").Subscribe((string s) => received = s);
-			Assert.AreEqual(___, received);
+			Assert.AreEqual("Foo", received);
 		}
 
 		[TestMethod]
@@ -84,7 +84,7 @@ namespace Koans.Lessons
 			var received = "";
 			var names = new[] { "Foo", "Bar" };
 			names.ToObservable().Subscribe((s) => received = s);
-			Assert.AreEqual(___, received);
+			Assert.AreEqual("Bar", received);
 		}
 
 		[TestMethod]
@@ -93,7 +93,7 @@ namespace Koans.Lessons
 			var received = 0;
 			var numbers = new[] { 3, 4 };
 			numbers.ToObservable().Subscribe((int x) => received += x);
-			Assert.AreEqual(___, received);
+			Assert.AreEqual(7, received);
 		}
 
 		[TestMethod]
@@ -104,7 +104,7 @@ namespace Koans.Lessons
 			numbers.Subscribe((int x) => received += x);
 			numbers.OnNext(10);
 			numbers.OnNext(5);
-			Assert.AreEqual(___, received);
+			Assert.AreEqual(15, received);
 		}
 
 		[TestMethod]
@@ -113,7 +113,7 @@ namespace Koans.Lessons
 			var received = "Working ";
 			var numbers = Range.Create(9, 5);
 			numbers.ToObservable().Subscribe((int x) => received += x);
-			Assert.AreEqual(___, received);
+			Assert.AreEqual("Working 98765", received);
 		}
 
 		[TestMethod]
@@ -121,7 +121,7 @@ namespace Koans.Lessons
 		{
 			var status = new List<String>();
 			var daysTillTest = Range.Create(4, 1).ToObservable();
-			daysTillTest.Do(d => status.Add(d + "=" + (d == 1 ? "Study Like Mad" : ___))).Subscribe();
+			daysTillTest.Do(d => status.Add(d + "=" + (d == 1 ? "Study Like Mad" : "Party"))).Subscribe();
 			Assert.AreEqual("[4=Party, 3=Party, 2=Party, 1=Study Like Mad]", status.AsString());
 		}
 
@@ -132,7 +132,7 @@ namespace Koans.Lessons
 			var numbers = Range.Create(1, 10).ToObservable();
 			var observable = numbers.Do(n => sum += n);
 			Assert.AreEqual(0, sum);
-			observable.___();
+			observable.Subscribe();
 			Assert.AreEqual(1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10, sum);
 		}
 
@@ -147,7 +147,7 @@ namespace Koans.Lessons
 			observable.Subscribe();
 			numbers.OnNext(3);
 			numbers.OnNext(4);
-			Assert.AreEqual(___, sum);
+			Assert.AreEqual(7, sum);
 		}
 
 		[TestMethod]
@@ -162,7 +162,7 @@ namespace Koans.Lessons
 			subscription.Dispose();
 			numbers.OnNext(3);
 			numbers.OnNext(4);
-			Assert.AreEqual(___, sum);
+			Assert.AreEqual(3, sum);
 		}
 		[TestMethod]
 		public void EventsWhileSubscribing()
@@ -178,7 +178,7 @@ namespace Koans.Lessons
 			words.OnNext("pretty");
 			subscription.Dispose();
 			words.OnNext("ugly");
-			Assert.AreEqual(___, String.Join(" ", recieved));
+			Assert.AreEqual("you look pretty", String.Join(" ", recieved));
 		}
 
 		[TestMethod]
@@ -192,7 +192,7 @@ namespace Koans.Lessons
 																																	received += x;
 																																	if (x == 5)
 																																	{
-																																		un.___();
+																																		un.Dispose();
 																																	}
 																																});
 			Thread.Sleep(100);
@@ -204,7 +204,7 @@ namespace Koans.Lessons
 		{
 			var received = "";
 			var subject = new Subject<int>();
-			subject.TakeUntil(subject.Where(x => x > ____)).Subscribe(x => received += x);
+			subject.TakeUntil(subject.Where(x => x > 5)).Subscribe(x => received += x);
 			subject.OnNext(Range.Create(1, 9).ToArray());
 			Assert.AreEqual("12345", received);
 		}
