@@ -27,7 +27,7 @@ namespace Koans.Lessons
 		public void LaunchingAnActionInTheFuture()
 		{
             string received = "";
-            TimeSpan delay = TimeSpan.FromSeconds(___);
+            TimeSpan delay = TimeSpan.FromSeconds(1);
 			Scheduler.Immediate.Schedule(delay, () => received = "Finished");
 			Assert.AreEqual("Finished", received);
 		}
@@ -37,7 +37,7 @@ namespace Koans.Lessons
 		public void LaunchingAnEventInTheFuture()
 		{
 			string received = null;
-            var time = TimeSpan.FromSeconds(___);
+            var time = TimeSpan.FromSeconds(1);
 			var people = new Subject<string>();
 			people.Delay(time).Subscribe(x => received = x);
 			people.OnNext("Godot");
@@ -54,7 +54,7 @@ namespace Koans.Lessons
 			var temperatures  = new Subject<string>();
 			temperatures.Timeout(timeout, timeoutEvent).Subscribe(x => received.Add(x));
 			temperatures.OnNext("Started");
-			Thread.Sleep(___);
+			Thread.Sleep(2100);
 			temperatures.OnNext("Boiling");
 			ThreadUtils.WaitUntil(() => received != null);
 			Assert.AreEqual("Started, Tepid", String.Join(", ", received));
@@ -80,7 +80,7 @@ namespace Koans.Lessons
 
 			Thread.Sleep(120);
 
-			Assert.AreEqual(____, String.Join(" ", received));
+			Assert.AreEqual("from scott", String.Join(" ", received));
 		}
 		[TestMethod]
 		[Timeout(2000)]
@@ -102,7 +102,7 @@ namespace Koans.Lessons
 			events.OnNext('d');
 			Thread.Sleep(120);
 
-			Assert.AreEqual(____, String.Join(" ", received));
+			Assert.AreEqual("Scott Reed", String.Join(" ", received));
 		}
 		[TestMethod]
 		[Timeout(2000)]
@@ -118,7 +118,7 @@ namespace Koans.Lessons
 			Thread.Sleep(120);
 			events.OnNext("down");
 
-			Assert.AreEqual(____, String.Join(" ", received));
+			Assert.AreEqual("slow down", String.Join(" ", received));
 		}
 
 
